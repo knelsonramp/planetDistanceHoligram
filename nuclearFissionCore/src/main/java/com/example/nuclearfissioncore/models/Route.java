@@ -8,7 +8,6 @@ import java.util.List;
 @Table(name="ROUTES")
 public class Route {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private Integer originPlanetId;
@@ -66,4 +65,7 @@ public class Route {
         return null;
     }
 
+    public void setId(Integer routeId) {
+       this.id = routeId;
+    }
 }

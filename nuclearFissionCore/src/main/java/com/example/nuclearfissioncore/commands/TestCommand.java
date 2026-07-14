@@ -72,6 +72,7 @@ public class TestCommand implements CommandLineRunner {
             Sheet sheet = workbook.getSheetAt(ROUTE_SHEET_INDEX);
 
             int headerRowNumber = 0;
+            int routeIdColumnIndex = 0;
             int planetOriginColumnIndex = 1;
             int planetDestinationColumnIndex = 2;
             int distanceColumnIndex = 3;
@@ -109,7 +110,6 @@ public class TestCommand implements CommandLineRunner {
                         Planet planet = null;
 
                         if(planetQuery.isEmpty()) {
-                            System.out.println("Destination Planet Node: " + destinationPlanetNode);
                             planet = new Planet("Unknown-" + destinationPlanetNode, destinationPlanetNode);
                             planet = planetRepository.save(planet);
                         } else {
@@ -121,9 +121,13 @@ public class TestCommand implements CommandLineRunner {
                     } else if(columnIndex == distanceColumnIndex) {
                          Double routeDistance = cell.getNumericCellValue();
                          route.setDistance(routeDistance);
+                    } else if(columnIndex == routeIdColumnIndex) {
+                        double routeId = cell.getNumericCellValue();
+                        route.setId((int) routeId);
                     }
-                     route = routeRepository.save(route);
                 }
+                routeRepository.save(route);
+                route = new Route();
             }
         }
     }
@@ -132,6 +136,16 @@ public class TestCommand implements CommandLineRunner {
     public void run(String... args) throws Exception {
         this.createPlanets();
         this.createRoutes();
+//        Route route = new Route();
+
+//        route.setOriginPlanetId(1);
+//        route.setDestinationPlanetId(2);
+//        route.setDistance(5.0);
+//        route.setId(1);
+//
+//        routeRepository.save(route);
+//        this.createPlanets();
+//        this.createRoutes();
 
 //        Planet planet = new Planet();
 //        planet.setNode("A");
