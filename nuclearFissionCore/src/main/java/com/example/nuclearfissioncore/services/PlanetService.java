@@ -45,12 +45,12 @@ public class PlanetService {
         List<PlanetWithRoutesDto> planetsWithRoutes = new ArrayList<>();
 
         for(Planet planet: planets) {
-            PlanetWithRoutesDto planetWithRoutes = new PlanetWithRoutesDto(planet.getId(), planet.getName());
+            PlanetWithRoutesDto planetWithRoutes = new PlanetWithRoutesDto(planet.getId(), planet.getName(), planet.getNode());
             List<RouteDto> routeDtos = new ArrayList<>();
             for(Route route: routes) {
                 if(Objects.equals(planet.getId(), route.getOriginPlanetId())) {
                     Planet destinationPlanet = planetsById.get(route.getDestinationPlanetId());
-                    RouteDto routeDto = new RouteDto(route.getDestinationPlanetId(), destinationPlanet.getName(), route.getDistance());
+                    RouteDto routeDto = new RouteDto(route.getDestinationPlanetId(), destinationPlanet.getName(), route.getDistance(), destinationPlanet.getNode());
                     routeDtos.add(routeDto);
                 }
             }

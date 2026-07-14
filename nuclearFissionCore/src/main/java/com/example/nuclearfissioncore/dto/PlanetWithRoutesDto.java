@@ -5,11 +5,21 @@ import java.util.List;
 public class PlanetWithRoutesDto {
     private Integer planetId;
     private String planetName;
+    private String planetNode;
     private List<RouteDto> routes;
 
-    public PlanetWithRoutesDto(Integer planetId, String planetName) {
+    public PlanetWithRoutesDto(Integer planetId, String planetName, String planetNode) {
         this.planetId = planetId;
         this.planetName = planetName;
+        this.planetNode = planetNode;
+    }
+
+    public String getPlanetNode() {
+        return planetNode;
+    }
+
+    public void setPlanetNode(String planetNode) {
+        this.planetNode = planetNode;
     }
 
     public void setPlanetName(String planetName) {
