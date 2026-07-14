@@ -20,4 +20,32 @@ public class Route {
         this.destinationPlanetId = destinationPlanetId;
         this.distance = distance;
     };
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getOriginPlanetId() {
+        return originPlanetId;
+    }
+
+    public void setOriginPlanetId(Integer originPlanetId) {
+        this.originPlanetId = originPlanetId;
+    }
+
+    public Integer getDestinationPlanetId() {
+        return destinationPlanetId;
+    }
+
+    public void setDestinationPlanetId(Integer destinationPlanetId) {
+        this.destinationPlanetId = destinationPlanetId;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
 }
