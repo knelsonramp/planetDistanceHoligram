@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class HelloController {
+public class PlanetController {
 
     private final PlanetRepository planetRepository;
 
-    public HelloController(PlanetRepository planetRepository) {
+    public PlanetController(PlanetRepository planetRepository) {
         this.planetRepository = planetRepository;
     }
 

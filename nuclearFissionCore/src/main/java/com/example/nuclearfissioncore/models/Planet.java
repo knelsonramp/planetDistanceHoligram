@@ -15,6 +15,8 @@ public class Planet {
         this.name = name;
     }
 
+    public Planet() {}
+
     public String getName() {
         return name;
     }

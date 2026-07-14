@@ -16,5 +16,7 @@ public class Seeder implements CommandLineRunner {
     @Override
     public void run(String @NonNull ... args) throws Exception {
         planetRepository.save(new Planet("A"));
+        planetRepository.save(new Planet("B"));
+        planetRepository.save(new Planet("C"));
     }
 }
