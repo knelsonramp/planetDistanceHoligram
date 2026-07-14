@@ -8,9 +8,13 @@ import jakarta.persistence.Table;
 @Table(name="PLANETS")
 public class Planet {
     @Id
+    private Integer id;
+
     private String name;
 
-    public Planet() {}
+    public Planet(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;
