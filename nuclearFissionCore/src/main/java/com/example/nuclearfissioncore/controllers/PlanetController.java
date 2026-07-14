@@ -12,22 +12,20 @@ import java.util.List;
 @RestController
 public class PlanetController {
 
-    private final PlanetRepository planetRepository;
     private final PlanetService planetService;
 
-    public PlanetController(PlanetRepository planetRepository, PlanetService planetService) {
-        this.planetRepository = planetRepository;
+    public PlanetController(PlanetService planetService) {
         this.planetService = planetService;
     }
 
     @GetMapping("/planets/{id}")
     public Planet getPlanet(@PathVariable Integer id) {
-        return planetRepository.findById(id).orElse(null);
+        return planetService.getPlanet(id);
     }
 
     @GetMapping("/planets")
     public List<Planet> getAllPlanets() {
-        return planetRepository.findAll();
+        return planetService.getAllPlanets();
     }
 
     @GetMapping("/planetsWithRoutes")
