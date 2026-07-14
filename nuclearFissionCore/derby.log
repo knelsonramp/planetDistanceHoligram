@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Mon Jul 13 22:42:36 EDT 2026:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-019f-5e81-3f57-000009ef6a10 
+Mon Jul 13 23:09:00 EDT 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-019f-5e99-6980-000009ef7190 
 on database directory memory:/Users/kevinnelson/_git/planetDistanceHoligram/nuclearFissionCore/graphdb with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@14dad5dc 
 Loaded from file:/Users/kevinnelson/.m2/repository/org/apache/derby/derby/10.16.1.1/derby-10.16.1.1.jar
 java.vendor=Oracle Corporation
