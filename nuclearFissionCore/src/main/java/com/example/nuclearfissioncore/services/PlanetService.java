@@ -50,7 +50,7 @@ public class PlanetService {
             for(Route route: routes) {
                 if(Objects.equals(planet.getId(), route.getOriginPlanetId())) {
                     Planet destinationPlanet = planetsById.get(route.getDestinationPlanetId());
-                    RouteDto routeDto = new RouteDto(route.getDestinationPlanetId(), destinationPlanet.getName(), route.getDistance(), destinationPlanet.getNode());
+                    RouteDto routeDto = new RouteDto(route.getDestinationPlanetId(), destinationPlanet.getName(), route.getDistance(), destinationPlanet.getNode(), route.getTrafficDelay());
                     routeDtos.add(routeDto);
                 }
             }

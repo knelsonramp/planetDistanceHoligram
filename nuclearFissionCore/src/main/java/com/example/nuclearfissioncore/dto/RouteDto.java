@@ -7,12 +7,14 @@ public class RouteDto {
     private String destinationPlanetName;
     private String destinationPlanetNode;
     private Double distance;
+    private Double trafficDelay;
 
-    public RouteDto(Integer destinationPlanetId, String destinationPlanetName, Double distance, String destinationPlanetNode) {
+    public RouteDto(Integer destinationPlanetId, String destinationPlanetName, Double distance, String destinationPlanetNode, Double trafficDelay) {
         this.destinationPlanetId = destinationPlanetId;
         this.destinationPlanetName = destinationPlanetName;
         this.distance = distance;
         this.destinationPlanetNode = destinationPlanetNode;
+        this.trafficDelay = trafficDelay;
     }
 
     public void setDesinationPlanetId(Integer destinationPlanetId) {
@@ -25,6 +27,10 @@ public class RouteDto {
 
     public void setDistance(Double distance) {
         this.distance = distance;
+    }
+
+    public Double getTrafficDelay() {
+        return trafficDelay;
     }
 
     public String getDestinationPlanetNode() {

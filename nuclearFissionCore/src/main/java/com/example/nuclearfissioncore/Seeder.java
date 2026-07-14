@@ -23,8 +23,8 @@ public class Seeder implements CommandLineRunner {
         planetRepository.save(new Planet("Earth", "A"));
         planetRepository.save(new Planet("Venus", "B"));
         planetRepository.save(new Planet("Mars", "B"));
-        routeRepository.save(new Route(1, 2, 0.30));
-        routeRepository.save(new Route(1, 3, 0.60));
-        routeRepository.save(new Route(2, 3, 0.30));
+        routeRepository.save(new Route(1, 2, 0.30, 0.1));
+        routeRepository.save(new Route(1, 3, 0.60, 0.2));
+        routeRepository.save(new Route(2, 3, 0.30, 0.3));
     }
 }

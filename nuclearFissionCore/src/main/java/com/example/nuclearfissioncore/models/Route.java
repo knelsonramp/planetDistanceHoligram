@@ -14,13 +14,15 @@ public class Route {
     private Integer originPlanetId;
     private Integer destinationPlanetId;
     private Double distance;
+    private Double trafficDelay;
 
     public Route() {};
 
-    public Route(Integer originPlanetId, Integer destinationPlanetId, Double distance) {
+    public Route(Integer originPlanetId, Integer destinationPlanetId, Double distance, Double trafficDelay) {
         this.originPlanetId = originPlanetId;
         this.destinationPlanetId = destinationPlanetId;
         this.distance = distance;
+        this.trafficDelay = trafficDelay;
     };
 
     public Integer getId() {
@@ -31,8 +33,24 @@ public class Route {
         return originPlanetId;
     }
 
+    public Double getTrafficDelay() {
+        return trafficDelay;
+    }
+
+    public void setTrafficDelay(Double trafficDelay) {
+        this.trafficDelay = trafficDelay;
+    }
+
     public void setOriginPlanetId(Integer originPlanetId) {
         this.originPlanetId = originPlanetId;
+    }
+
+    public void setTraficDelay(Double traficDelay) {
+        this.trafficDelay = traficDelay;
+    }
+
+    public Double getTraficDelay() {
+        return trafficDelay;
     }
 
     public Integer getDestinationPlanetId() {
