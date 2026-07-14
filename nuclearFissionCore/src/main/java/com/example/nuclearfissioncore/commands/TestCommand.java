@@ -1,5 +1,7 @@
 package com.example.nuclearfissioncore.commands;
 
+import com.example.nuclearfissioncore.models.Planet;
+import com.example.nuclearfissioncore.repositoryies.PlanetRepository;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -17,16 +19,23 @@ import java.nio.file.Paths;
 public class TestCommand implements CommandLineRunner {
 
     private static final String COMMAND_NAME = "kevin:testCommand";
+    private final PlanetRepository planetRepository;
     private static final String FILE_PATH =
             "src/main/java/com/example/nuclearfissioncore/data/planetsDistanceToEachOther.xlsx";
+
+    public TestCommand(PlanetRepository planetRepository) {
+        this.planetRepository = planetRepository;
+    }
 
     @Override
     public void run(String... args) throws Exception {
         Path path = Paths.get(FILE_PATH);
         try (InputStream input = Files.newInputStream(path);
              XSSFWorkbook workbook = new XSSFWorkbook(input)) {
+
             Sheet sheet = workbook.getSheetAt(0);
             System.out.println("SheetName: " + sheet.getSheetName());
+
             for (Row row : sheet) {
                 int rowNumber = row.getRowNum();
 
@@ -34,14 +43,17 @@ public class TestCommand implements CommandLineRunner {
                     continue;
                 }
 
+                Planet planet = new Planet();
                 for (Cell cell : row) {
                     int columnIndex = cell.getColumnIndex();
                     if(columnIndex == 0) {
-                        System.out.println("PlanetName: " + cell);
+                        planet.setName(cell.getStringCellValue());
                     } else {
-                        System.out.println("PlanetNode: " + cell);
+                        planet.setNode(cell.getStringCellValue());
                     }
                 }
+                planet = planetRepository.save(planet);
+                System.out.println(planet.getId());
             }
         }
     }
