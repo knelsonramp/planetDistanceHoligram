@@ -5,6 +5,7 @@ import com.example.nuclearfissioncore.repositoryies.PlanetRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 @RestController
 public class HelloController {
@@ -17,12 +18,11 @@ public class HelloController {
 
     @GetMapping("/planets/{id}")
     public Planet getPlanet(@PathVariable Integer id) {
-        return new Planet("A");
-//        return planetRepository.findById(id).orElse(null);
+        return planetRepository.findById(id).orElse(null);
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "nuclear fuzzbuzz";
+    @GetMapping("/planets")
+    public List<Planet> getAllPlanets() {
+        return planetRepository.findAll();
     }
 }
