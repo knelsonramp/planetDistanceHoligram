@@ -7,13 +7,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 
 @Component
@@ -21,16 +19,15 @@ public class TestCommand implements CommandLineRunner {
 
     private static final String COMMAND_NAME = "kevin:testCommand";
     private final PlanetRepository planetRepository;
-    private static final String FILE_PATH =
-            "src/main/java/com/example/nuclearfissioncore/data/planetsDistanceToEachOther.xlsx";
+    private static final String FILE_PATH = "data/planetsDistanceToEachOther.xlsx";
 
     public TestCommand(PlanetRepository planetRepository) {
         this.planetRepository = planetRepository;
     }
 
     private void createPlanets() throws IOException {
-        Path path = Paths.get(FILE_PATH);
-        try (InputStream input = Files.newInputStream(path);
+        ClassPathResource resource = new ClassPathResource(FILE_PATH);
+        try (InputStream input = resource.getInputStream();
              XSSFWorkbook workbook = new XSSFWorkbook(input)) {
 
             Sheet sheet = workbook.getSheetAt(0);
