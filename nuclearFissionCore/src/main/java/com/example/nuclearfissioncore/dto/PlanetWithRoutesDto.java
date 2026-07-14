@@ -23,4 +23,16 @@ public class PlanetWithRoutesDto {
     public void setRoutes(List<RouteDto> routes) {
         this.routes = routes;
     }
+
+    public Integer getPlanetId() {
+        return planetId;
+    }
+
+    public String getPlanetName() {
+        return planetName;
+    }
+
+    public List<RouteDto> getRoutes() {
+        return routes;
+    }
 }

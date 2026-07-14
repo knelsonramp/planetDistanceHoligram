@@ -24,4 +24,16 @@ public class RouteDto {
     public void setDistance(Double distance) {
         this.distance = distance;
     }
+
+    public Integer getDestinationPlanetId() {
+        return destinationPlanetId;
+    }
+
+    public String getDestinationPlanetName() {
+        return destinationPlanetName;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
 }
