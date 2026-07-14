@@ -21,6 +21,10 @@ public class Planet {
         return name;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

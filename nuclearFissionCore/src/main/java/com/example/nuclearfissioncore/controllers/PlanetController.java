@@ -2,7 +2,6 @@ package com.example.nuclearfissioncore.controllers;
 
 import com.example.nuclearfissioncore.dto.PlanetWithRoutesDto;
 import com.example.nuclearfissioncore.models.Planet;
-import com.example.nuclearfissioncore.repositoryies.PlanetRepository;
 import com.example.nuclearfissioncore.services.PlanetService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +29,6 @@ public class PlanetController {
 
     @GetMapping("/planetsWithRoutes")
     public List<PlanetWithRoutesDto> getPlanetsWithRoutes() {
-        return planetService.getPlanetWithRoutes();
+        return planetService.getPlanetsWithRoutes();
     }
 }
