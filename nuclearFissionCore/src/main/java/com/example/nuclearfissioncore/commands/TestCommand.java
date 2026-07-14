@@ -28,11 +28,20 @@ public class TestCommand implements CommandLineRunner {
             Sheet sheet = workbook.getSheetAt(0);
             System.out.println("SheetName: " + sheet.getSheetName());
             for (Row row : sheet) {
-                StringBuilder rowText = new StringBuilder();
-                for (Cell cell : row) {
-                    rowText.append(cell).append("\t");
+                int rowNumber = row.getRowNum();
+
+                if(rowNumber == 0) {
+                    continue;
                 }
-                System.out.println(rowText);
+
+                for (Cell cell : row) {
+                    int columnIndex = cell.getColumnIndex();
+                    if(columnIndex == 0) {
+                        System.out.println("PlanetName: " + cell);
+                    } else {
+                        System.out.println("PlanetNode: " + cell);
+                    }
+                }
             }
         }
     }
