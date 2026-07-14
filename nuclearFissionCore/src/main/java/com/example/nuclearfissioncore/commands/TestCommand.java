@@ -38,7 +38,6 @@ public class TestCommand implements CommandLineRunner {
              XSSFWorkbook workbook = new XSSFWorkbook(input)) {
 
             Sheet sheet = workbook.getSheetAt(PLANET_SHEET_INDEX);
-            System.out.println("SheetName: " + sheet.getSheetName());
 
             int headerRowNumber = 0;
             int planetNodeColumnIndex = 0;
@@ -71,7 +70,6 @@ public class TestCommand implements CommandLineRunner {
              XSSFWorkbook workbook = new XSSFWorkbook(input)) {
 
             Sheet sheet = workbook.getSheetAt(ROUTE_SHEET_INDEX);
-            System.out.println("SheetName: " + sheet.getSheetName());
 
             int headerRowNumber = 0;
             int planetOriginColumnIndex = 1;
@@ -92,22 +90,32 @@ public class TestCommand implements CommandLineRunner {
                          String originPlanetNode = cell.getStringCellValue();
                          Optional<Planet> planetQuery = planetRepository.findByNode(originPlanetNode);
 
+                         Planet planet = null;
+
                          if(planetQuery.isEmpty()) {
-                             break;
+                             System.out.println("Origin Planet Node: " + originPlanetNode);
+                             planet = new Planet("Unknown-" + originPlanetNode, originPlanetNode);
+                             planet = planetRepository.save(planet);
+                         } else {
+                             planet = planetQuery.get();
                          }
 
-                         Planet planet = planetQuery.get();
                          route.setOriginPlanetId(planet.getId());
 
                     } else if(columnIndex == planetDestinationColumnIndex) {
                          String destinationPlanetNode = cell.getStringCellValue();
                          Optional<Planet> planetQuery = planetRepository.findByNode(destinationPlanetNode);
 
-                         if(planetQuery.isEmpty()) {
-                             break;
-                         }
+                        Planet planet = null;
 
-                         Planet planet = planetQuery.get();
+                        if(planetQuery.isEmpty()) {
+                            System.out.println("Destination Planet Node: " + destinationPlanetNode);
+                            planet = new Planet("Unknown-" + destinationPlanetNode, destinationPlanetNode);
+                            planet = planetRepository.save(planet);
+                        } else {
+                            planet = planetQuery.get();
+                        }
+
                          route.setDestinationPlanetId(planet.getId());
 
                     } else if(columnIndex == distanceColumnIndex) {
@@ -115,7 +123,6 @@ public class TestCommand implements CommandLineRunner {
                          route.setDistance(routeDistance);
                     }
                      route = routeRepository.save(route);
-                     System.out.println(route.getId());
                 }
             }
         }
