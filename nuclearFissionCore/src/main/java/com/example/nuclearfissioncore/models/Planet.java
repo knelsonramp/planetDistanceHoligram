@@ -2,6 +2,8 @@ package com.example.nuclearfissioncore.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="PLANETS")
 public class Planet {
@@ -11,8 +13,11 @@ public class Planet {
 
     private String name;
 
-    public Planet(String name) {
+    private String node;
+
+    public Planet(String name, String node) {
         this.name = name;
+        this.node = node;
     }
 
     public Planet() {}
@@ -21,11 +26,22 @@ public class Planet {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNode() { return node; }
+
+    public void setNode(String node) {
+        this.name = node;
+    }
+
     public Integer getId() {
         return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+
+    public List<Integer> getDistanceToDestination(List<Integer> currentPlanetIdPath, Integer currentDistance, Integer destinationPlantId) {
+        return null;
     }
 }

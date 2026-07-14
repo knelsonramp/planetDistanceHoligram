@@ -2,6 +2,8 @@ package com.example.nuclearfissioncore.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="ROUTES")
 public class Route {
@@ -48,4 +50,10 @@ public class Route {
     public void setDistance(Double distance) {
         this.distance = distance;
     }
+
+    public List<Integer> getDistanceToDestination(List<Integer> currentPlanetIdPath, Double currentDistance, Integer destinationPlantId) {
+        currentDistance += distance;
+        return null;
+    }
+
 }

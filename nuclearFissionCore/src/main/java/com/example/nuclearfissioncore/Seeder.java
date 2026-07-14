@@ -20,9 +20,9 @@ public class Seeder implements CommandLineRunner {
 
     @Override
     public void run(String @NonNull ... args) throws Exception {
-        planetRepository.save(new Planet("A"));
-        planetRepository.save(new Planet("B"));
-        planetRepository.save(new Planet("C"));
+        planetRepository.save(new Planet("Earth", "A"));
+        planetRepository.save(new Planet("Venus", "B"));
+        planetRepository.save(new Planet("Mars", "B"));
         routeRepository.save(new Route(1, 2, 0.30));
         routeRepository.save(new Route(1, 3, 0.60));
         routeRepository.save(new Route(2, 3, 0.30));
