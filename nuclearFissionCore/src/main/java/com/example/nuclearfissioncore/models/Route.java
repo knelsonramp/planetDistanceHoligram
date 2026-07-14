@@ -45,14 +45,6 @@ public class Route {
         this.originPlanetId = originPlanetId;
     }
 
-    public void setTraficDelay(Double traficDelay) {
-        this.trafficDelay = traficDelay;
-    }
-
-    public Double getTraficDelay() {
-        return trafficDelay;
-    }
-
     public Integer getDestinationPlanetId() {
         return destinationPlanetId;
     }

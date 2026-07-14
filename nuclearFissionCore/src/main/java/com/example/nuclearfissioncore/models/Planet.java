@@ -33,7 +33,7 @@ public class Planet {
     public String getNode() { return node; }
 
     public void setNode(String node) {
-        this.name = node;
+        this.node = node;
     }
 
     public Integer getId() {
