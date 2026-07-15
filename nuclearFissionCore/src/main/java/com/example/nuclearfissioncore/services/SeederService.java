@@ -1,26 +1,23 @@
-package com.example.nuclearfissioncore.commands;
+package com.example.nuclearfissioncore.services;
 
 import com.example.nuclearfissioncore.models.Planet;
 import com.example.nuclearfissioncore.models.Route;
 import com.example.nuclearfissioncore.repositoryies.PlanetRepository;
 import com.example.nuclearfissioncore.repositoryies.RouteRepository;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
 
-@Component
-public class TestCommand implements CommandLineRunner {
+@Service
+public class SeederService {
 
-    private static final String COMMAND_NAME = "kevin:testCommand";
     private final PlanetRepository planetRepository;
     private final RouteRepository routeRepository;
     private static final String FILE_PATH = "data/planetsDistanceToEachOther.xlsx";
@@ -28,12 +25,12 @@ public class TestCommand implements CommandLineRunner {
     private static final Integer ROUTE_SHEET_INDEX = 1;
     private static final Integer TRAFFIC_SHEET_INDEX = 2;
 
-    public TestCommand(PlanetRepository planetRepository, RouteRepository routeRepository) {
+    public SeederService(PlanetRepository planetRepository, RouteRepository routeRepository) {
         this.planetRepository = planetRepository;
         this.routeRepository = routeRepository;
     }
 
-    private void createPlanets() throws IOException {
+    public void createPlanets() throws IOException {
         ClassPathResource resource = new ClassPathResource(FILE_PATH);
         try (InputStream input = resource.getInputStream();
              XSSFWorkbook workbook = new XSSFWorkbook(input)) {
@@ -59,7 +56,7 @@ public class TestCommand implements CommandLineRunner {
         }
     }
 
-    private void createRoutes() throws IOException {
+    public void createRoutes() throws IOException {
         ClassPathResource resource = new ClassPathResource(FILE_PATH);
         try (InputStream input = resource.getInputStream();
              XSSFWorkbook workbook = new XSSFWorkbook(input)) {
@@ -85,7 +82,7 @@ public class TestCommand implements CommandLineRunner {
 
                 String originPlanetNode = row.getCell(planetOriginColumnIndex).getStringCellValue();
                 Optional<Planet> originPlanetQuery = planetRepository.findByNode(originPlanetNode);
-                Planet originPlanet = null;
+                Planet originPlanet;
                 if(originPlanetQuery.isEmpty()) {
                     originPlanet = new Planet("Unknown-" + originPlanetNode, originPlanetNode);
                     originPlanet = planetRepository.save(originPlanet);
@@ -95,7 +92,7 @@ public class TestCommand implements CommandLineRunner {
 
                 String destinationPlanetNode = row.getCell(planetDestinationColumnIndex).getStringCellValue();
                 Optional<Planet> destinationPlanetQuery = planetRepository.findByNode(destinationPlanetNode);
-                Planet destinationPlanet = null;
+                Planet destinationPlanet;
                 if(destinationPlanetQuery.isEmpty()) {
                     destinationPlanet = new Planet("Unknown-" + destinationPlanetNode, destinationPlanetNode);
                     destinationPlanet = planetRepository.save(destinationPlanet);
@@ -116,7 +113,7 @@ public class TestCommand implements CommandLineRunner {
         }
     }
 
-    private void addTrafficDelayToRoutes() throws IOException {
+    public void addTrafficDelayToRoutes() throws IOException {
         ClassPathResource resource = new ClassPathResource(FILE_PATH);
         try (InputStream input = resource.getInputStream();
              XSSFWorkbook workbook = new XSSFWorkbook(input)) {
@@ -149,42 +146,5 @@ public class TestCommand implements CommandLineRunner {
                 routeRepository.save(route);
             }
         }
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
-//        this.createPlanets();
-//        this.createRoutes();
-//        this.addTrafficDelayToRoutes();
-//        Route route = new Route();
-
-//        route.setOriginPlanetId(1);
-//        route.setDestinationPlanetId(2);
-//        route.setDistance(5.0);
-//        route.setId(1);
-//
-//        routeRepository.save(route);
-//        this.createPlanets();
-//        this.createRoutes();
-
-//        Planet planet = new Planet();
-//        planet.setNode("A");
-//        planet.setName("Earth");
-//        Planet newPlanet = planetRepository.save(planet);
-//
-//        System.out.println(newPlanet.getNode());
-//        System.out.println(newPlanet.getName());
-
-//        System.out.println(newPlanet);
-
-
-//        Optional<Planet> planetQuery = planetRepository.findByNode("A");
-//
-//        if(planetQuery.isPresent()) {
-//            Planet planet = planetQuery.get();
-//            System.out.println("Planet id: " + planet.getId());
-//        } else {
-//            System.out.println("Planet not found");
-//        }
     }
 }
