@@ -4,6 +4,7 @@ import com.example.nuclearfissioncore.models.Route;
 import com.example.nuclearfissioncore.repositoryies.RouteRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,5 +26,10 @@ public class RouteController {
     @GetMapping("/routes")
     public List<Route> getAllPlanets() {
         return routeRepository.findAll();
+    }
+
+        @GetMapping("/distanceBetweenPlanets")
+    public Integer getDistanceBetweenPlanets(@RequestParam Integer originPlanetId, @RequestParam Integer destinationPlanetId) {
+        return originPlanetId + destinationPlanetId;
     }
 }
