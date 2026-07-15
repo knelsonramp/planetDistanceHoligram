@@ -21,8 +21,6 @@ public class Seeder implements CommandLineRunner {
 
     @Override
     public void run(String @NonNull ... args) throws Exception {
-        seederService.createPlanets();
-        seederService.createRoutes();
-        seederService.addTrafficDelayToRoutes();
+        seederService.createPlanetsAndRoutes();
     }
 }

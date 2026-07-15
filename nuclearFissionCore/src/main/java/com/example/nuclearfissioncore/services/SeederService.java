@@ -30,6 +30,18 @@ public class SeederService {
         this.routeRepository = routeRepository;
     }
 
+    private Planet createOrFindPlanetByNode(String node) {
+        Optional<Planet> planetQuery = planetRepository.findByNode(node);
+        Planet planet;
+        if(planetQuery.isEmpty()) {
+            planet = new Planet("Unknown-" + node, node);
+            planet = planetRepository.save(planet);
+        } else {
+            planet = planetQuery.get();
+        }
+        return planet;
+    }
+
     public void createPlanets() throws IOException {
         ClassPathResource resource = new ClassPathResource(FILE_PATH);
         try (InputStream input = resource.getInputStream();
@@ -81,24 +93,9 @@ public class SeederService {
                 double trafficDelay = 0.0;
 
                 String originPlanetNode = row.getCell(planetOriginColumnIndex).getStringCellValue();
-                Optional<Planet> originPlanetQuery = planetRepository.findByNode(originPlanetNode);
-                Planet originPlanet;
-                if(originPlanetQuery.isEmpty()) {
-                    originPlanet = new Planet("Unknown-" + originPlanetNode, originPlanetNode);
-                    originPlanet = planetRepository.save(originPlanet);
-                } else {
-                    originPlanet = originPlanetQuery.get();
-                }
-
+                Planet originPlanet = this.createOrFindPlanetByNode(originPlanetNode);
                 String destinationPlanetNode = row.getCell(planetDestinationColumnIndex).getStringCellValue();
-                Optional<Planet> destinationPlanetQuery = planetRepository.findByNode(destinationPlanetNode);
-                Planet destinationPlanet;
-                if(destinationPlanetQuery.isEmpty()) {
-                    destinationPlanet = new Planet("Unknown-" + destinationPlanetNode, destinationPlanetNode);
-                    destinationPlanet = planetRepository.save(destinationPlanet);
-                } else {
-                    destinationPlanet = destinationPlanetQuery.get();
-                }
+                Planet destinationPlanet = this.createOrFindPlanetByNode(destinationPlanetNode);
 
                 Route route = new Route(
                         routeId,
@@ -146,5 +143,11 @@ public class SeederService {
                 routeRepository.save(route);
             }
         }
+    }
+
+    public void createPlanetsAndRoutes() throws IOException {
+        this.createPlanets();
+        this.createRoutes();
+        this.addTrafficDelayToRoutes();
     }
 }
