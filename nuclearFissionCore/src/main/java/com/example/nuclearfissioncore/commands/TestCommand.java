@@ -26,6 +26,7 @@ public class TestCommand implements CommandLineRunner {
     private static final String FILE_PATH = "data/planetsDistanceToEachOther.xlsx";
     private static final Integer PLANET_SHEET_INDEX = 0;
     private static final Integer ROUTE_SHEET_INDEX = 1;
+    private static final Integer TRAFFIC_SHEET_INDEX = 2;
 
     public TestCommand(PlanetRepository planetRepository, RouteRepository routeRepository) {
         this.planetRepository = planetRepository;
@@ -132,10 +133,46 @@ public class TestCommand implements CommandLineRunner {
         }
     }
 
+    private void addTrafficDelayToRoutes() throws IOException {
+        ClassPathResource resource = new ClassPathResource(FILE_PATH);
+        try (InputStream input = resource.getInputStream();
+             XSSFWorkbook workbook = new XSSFWorkbook(input)) {
+
+            Sheet sheet = workbook.getSheetAt(TRAFFIC_SHEET_INDEX);
+
+            int headerRowNumber = 0;
+            int routeIdColumnIndex = 0;
+            int trafficDelayColumnIndex = 3;
+
+            for (Row row : sheet) {
+                int rowNumber = row.getRowNum();
+
+                if (rowNumber == headerRowNumber) {
+                    continue;
+                }
+
+                double routeId = row.getCell(routeIdColumnIndex).getNumericCellValue();
+                Optional<Route> routeQuery = routeRepository.findById((int)routeId);
+
+                if(routeQuery.isEmpty()) {
+                    continue;
+                }
+
+                Route route = routeQuery.get();
+
+                double trafficDelay = row.getCell(trafficDelayColumnIndex).getNumericCellValue();
+                route.setTrafficDelay(trafficDelay);
+
+                routeRepository.save(route);
+            }
+        }
+    }
+
     @Override
     public void run(String... args) throws Exception {
         this.createPlanets();
         this.createRoutes();
+        this.addTrafficDelayToRoutes();
 //        Route route = new Route();
 
 //        route.setOriginPlanetId(1);
