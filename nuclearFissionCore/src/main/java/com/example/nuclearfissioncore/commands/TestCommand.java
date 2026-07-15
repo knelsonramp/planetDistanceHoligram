@@ -51,16 +51,10 @@ public class TestCommand implements CommandLineRunner {
                     continue;
                 }
 
-                Planet planet = new Planet();
-                for (Cell cell : row) {
-                    int columnIndex = cell.getColumnIndex();
-                    if (columnIndex == planetNodeColumnIndex) {
-                        planet.setNode(cell.getStringCellValue());
-                    } else if(columnIndex == planetNameColumnIndex) {
-                        planet.setName(cell.getStringCellValue());
-                    }
-                }
-                planet = planetRepository.save(planet);
+                String planetName = row.getCell(planetNameColumnIndex).getStringCellValue();
+                String planetNode = row.getCell(planetNodeColumnIndex).getStringCellValue();
+                Planet planet = new Planet(planetName, planetNode);
+                planetRepository.save(planet);
             }
         }
     }
