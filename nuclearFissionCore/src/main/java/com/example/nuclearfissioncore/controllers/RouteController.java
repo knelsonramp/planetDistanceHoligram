@@ -2,10 +2,13 @@ package com.example.nuclearfissioncore.controllers;
 
 import com.example.nuclearfissioncore.models.Route;
 import com.example.nuclearfissioncore.repositoryies.RouteRepository;
+import com.example.nuclearfissioncore.services.RouteService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -13,9 +16,11 @@ import java.util.List;
 public class RouteController {
 
     private final RouteRepository routeRepository;
+    private final RouteService routeService;
 
-    public RouteController(RouteRepository routeRepository) {
+    public RouteController(RouteRepository routeRepository, RouteService routeService) {
         this.routeRepository = routeRepository;
+        this.routeService = routeService;
     }
 
     @GetMapping("/routes/{id}")
@@ -28,8 +33,8 @@ public class RouteController {
         return routeRepository.findAll();
     }
 
-        @GetMapping("/distanceBetweenPlanets")
-    public Integer getDistanceBetweenPlanets(@RequestParam Integer originPlanetId, @RequestParam Integer destinationPlanetId) {
-        return originPlanetId + destinationPlanetId;
+    @GetMapping("/distanceBetweenPlanets")
+    public Double getDistanceBetweenPlanets(@RequestParam Integer originPlanetId, @RequestParam Integer destinationPlanetId) {
+        return routeService.findShortestDistance(originPlanetId, destinationPlanetId);
     }
 }
