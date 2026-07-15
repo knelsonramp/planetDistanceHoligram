@@ -32,7 +32,7 @@ public class RouteController {
         return routeRepository.findAll();
     }
 
-    @GetMapping("/distanceBetweenPlanets")
+    @GetMapping("/shortestPathBetweenPlanets")
     public PathAndDistanceDto getDistanceBetweenPlanets(@RequestParam Integer originPlanetId, @RequestParam Integer destinationPlanetId) {
         return routeService.findShortestPath(originPlanetId, destinationPlanetId);
     }
