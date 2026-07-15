@@ -1,10 +1,10 @@
 package com.example.nuclearfissioncore.services;
 
+import com.example.nuclearfissioncore.dto.PathAndDistanceDto;
 import com.example.nuclearfissioncore.models.Route;
 import com.example.nuclearfissioncore.repositoryies.RouteRepository;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Path;
 import java.util.*;
 
 @Service
@@ -16,30 +16,35 @@ public class RouteService {
         this.routeRepository = routeRepository;
     }
 
-    public Double findShortestDistance(Integer originPlanetId, Integer destinationPlanetId) {
+    public PathAndDistanceDto findShortestPath(Integer originPlanetId, Integer destinationPlanetId) {
+
+        PathAndDistanceDto shortestPathAndDistance = new PathAndDistanceDto(new ArrayList<>(List.of(originPlanetId)), Double.POSITIVE_INFINITY);
+
         if(Objects.equals(originPlanetId, destinationPlanetId)) {
-            return 0.0;
+            shortestPathAndDistance.setDistance(0.0);
+            return shortestPathAndDistance;
         }
 
         Queue<PathTracker> pathsToExplore = new ArrayDeque<>();
 
         List<Integer> startingPoint = new ArrayList<>(List.of(originPlanetId));
-        double currentDistance = 0;
-        PathTracker startingPath = new PathTracker(startingPoint, currentDistance);
+        double startingDistance = 0;
+        PathTracker startingPath = new PathTracker(startingPoint, startingDistance);
         pathsToExplore.add(startingPath);
 
-        double minDistance = Double.POSITIVE_INFINITY;
+        double shortestDistance = Double.POSITIVE_INFINITY;
         while(!pathsToExplore.isEmpty()) {
             PathTracker currentPath = pathsToExplore.poll();
 
-            if(currentPath.distance > minDistance) {
+            if(currentPath.distance > shortestPathAndDistance.getDistance()) {
                 continue;
             }
 
             int lastestPlanetIdInPath = currentPath.path.get(currentPath.path.size() - 1);
 
             if(Objects.equals(lastestPlanetIdInPath, destinationPlanetId)) {
-                minDistance = currentPath.distance;
+                shortestPathAndDistance.setDistance(currentPath.distance);
+                shortestPathAndDistance.setPath(new ArrayList<>(currentPath.path));
                 continue;
             }
 
@@ -58,7 +63,7 @@ public class RouteService {
             }
         }
 
-        return minDistance;
+        return shortestPathAndDistance;
     }
 
     static class PathTracker {
