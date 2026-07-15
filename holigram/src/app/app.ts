@@ -19,12 +19,30 @@ export class App {
     this.http.get<any[]>('http://localhost:8080/planetsWithRoutes')
       .subscribe({
         next: (data) => {
-          this.planets = data;
-          console.log(data);
+          this.planets = data.map(planet => ({
+            ...planet,
+            selected: false
+          }));
         },
         error: (err) => {
           console.error(err);
         }
       });
+  }
+
+  onPlanetChecked(planet: any, checked: boolean) {
+    const selected = this.planets.filter(p => p.selected);
+
+    if (checked && selected.length === 2) {
+      selected[1].selected = false;
+    }
+
+    planet.selected = checked;
+
+    this.planets.filter(p => p.selected);
+  }
+
+  onCalculateClicked() {
+    console.log('calculating');
   }
 }

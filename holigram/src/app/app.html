@@ -1,7 +1,15 @@
-@for (planet of planets; track planet.id) {
+@for (planet of planets; track planet.planetId) {
   <div>
+    <input 
+      type="checkbox"
+      [checked]="planet.selected"
+      (change)="onPlanetChecked(planet, $any($event.target).checked)"
+    >
     {{ planet.planetName }}
   </div>
 }
+
+<button (click)="onCalculateClicked()">Calculate Distance</button>
+<p>Distance: </p>
 
 <router-outlet />
