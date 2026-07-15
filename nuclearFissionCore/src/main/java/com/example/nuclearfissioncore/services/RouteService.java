@@ -70,15 +70,4 @@ public class RouteService {
             this.distance = currentDistance;
         }
     }
-
-    private List<Integer> getDestinationPlanetIdsFromRoutes(List<Route> departureRoutes) {
-        if(departureRoutes.isEmpty()) {
-            return new ArrayList<>();
-        }
-        List<Integer> destinationPlanetIds = new ArrayList<>();
-        for(Route route: departureRoutes) {
-            destinationPlanetIds.add(route.getDestinationPlanetId());
-        }
-        return destinationPlanetIds;
-    }
 }
