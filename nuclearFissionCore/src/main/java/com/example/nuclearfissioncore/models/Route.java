@@ -17,7 +17,8 @@ public class Route {
 
     public Route() {};
 
-    public Route(Integer originPlanetId, Integer destinationPlanetId, Double distance, Double trafficDelay) {
+    public Route(Integer id, Integer originPlanetId, Integer destinationPlanetId, Double distance, Double trafficDelay) {
+        this.id = id;
         this.originPlanetId = originPlanetId;
         this.destinationPlanetId = destinationPlanetId;
         this.distance = distance;

@@ -79,50 +79,39 @@ public class TestCommand implements CommandLineRunner {
                     continue;
                 }
 
-                Route route = new Route();
-                for (Cell cell : row) {
-                    int columnIndex = cell.getColumnIndex();
-                    if (columnIndex == planetOriginColumnIndex) {
-                         String originPlanetNode = cell.getStringCellValue();
-                         Optional<Planet> planetQuery = planetRepository.findByNode(originPlanetNode);
+                int routeId = (int)row.getCell(routeIdColumnIndex).getNumericCellValue();
+                double distance = row.getCell(distanceColumnIndex).getNumericCellValue();
+                double trafficDelay = 0.0;
 
-                         Planet planet = null;
-
-                         if(planetQuery.isEmpty()) {
-                             System.out.println("Origin Planet Node: " + originPlanetNode);
-                             planet = new Planet("Unknown-" + originPlanetNode, originPlanetNode);
-                             planet = planetRepository.save(planet);
-                         } else {
-                             planet = planetQuery.get();
-                         }
-
-                         route.setOriginPlanetId(planet.getId());
-
-                    } else if(columnIndex == planetDestinationColumnIndex) {
-                         String destinationPlanetNode = cell.getStringCellValue();
-                         Optional<Planet> planetQuery = planetRepository.findByNode(destinationPlanetNode);
-
-                        Planet planet = null;
-
-                        if(planetQuery.isEmpty()) {
-                            planet = new Planet("Unknown-" + destinationPlanetNode, destinationPlanetNode);
-                            planet = planetRepository.save(planet);
-                        } else {
-                            planet = planetQuery.get();
-                        }
-
-                         route.setDestinationPlanetId(planet.getId());
-
-                    } else if(columnIndex == distanceColumnIndex) {
-                         Double routeDistance = cell.getNumericCellValue();
-                         route.setDistance(routeDistance);
-                    } else if(columnIndex == routeIdColumnIndex) {
-                        double routeId = cell.getNumericCellValue();
-                        route.setId((int) routeId);
-                    }
+                String originPlanetNode = row.getCell(planetOriginColumnIndex).getStringCellValue();
+                Optional<Planet> originPlanetQuery = planetRepository.findByNode(originPlanetNode);
+                Planet originPlanet = null;
+                if(originPlanetQuery.isEmpty()) {
+                    originPlanet = new Planet("Unknown-" + originPlanetNode, originPlanetNode);
+                    originPlanet = planetRepository.save(originPlanet);
+                } else {
+                    originPlanet = originPlanetQuery.get();
                 }
+
+                String destinationPlanetNode = row.getCell(planetDestinationColumnIndex).getStringCellValue();
+                Optional<Planet> destinationPlanetQuery = planetRepository.findByNode(destinationPlanetNode);
+                Planet destinationPlanet = null;
+                if(destinationPlanetQuery.isEmpty()) {
+                    destinationPlanet = new Planet("Unknown-" + destinationPlanetNode, destinationPlanetNode);
+                    destinationPlanet = planetRepository.save(destinationPlanet);
+                } else {
+                    destinationPlanet = destinationPlanetQuery.get();
+                }
+
+                Route route = new Route(
+                        routeId,
+                        originPlanet.getId(),
+                        destinationPlanet.getId(),
+                        distance,
+                        trafficDelay
+                );
+
                 routeRepository.save(route);
-                route = new Route();
             }
         }
     }
