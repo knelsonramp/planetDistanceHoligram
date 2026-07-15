@@ -1,7 +1,9 @@
 package com.example.nuclearfissioncore.services;
 
 import com.example.nuclearfissioncore.dto.PathAndDistanceDto;
+import com.example.nuclearfissioncore.models.Planet;
 import com.example.nuclearfissioncore.models.Route;
+import com.example.nuclearfissioncore.repositoryies.PlanetRepository;
 import com.example.nuclearfissioncore.repositoryies.RouteRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,11 @@ import java.util.*;
 public class RouteService {
 
     private final RouteRepository routeRepository;
+    private final PlanetRepository planetRepository;
 
-    public RouteService(RouteRepository routeRepository) {
+    public RouteService(RouteRepository routeRepository, PlanetRepository planetRepository) {
         this.routeRepository = routeRepository;
+        this.planetRepository = planetRepository;
     }
 
     public PathAndDistanceDto findShortestPath(Integer originPlanetId, Integer destinationPlanetId) {
@@ -22,6 +26,7 @@ public class RouteService {
 
         if(Objects.equals(originPlanetId, destinationPlanetId)) {
             shortestPathAndDistance.setDistance(0.0);
+            this.populatePlanetPathFromPlanetIdPath(shortestPathAndDistance);
             return shortestPathAndDistance;
         }
 
@@ -44,7 +49,7 @@ public class RouteService {
 
             if(Objects.equals(lastestPlanetIdInPath, destinationPlanetId)) {
                 shortestPathAndDistance.setDistance(currentPath.distance);
-                shortestPathAndDistance.setPath(new ArrayList<>(currentPath.path));
+                shortestPathAndDistance.setPlanetIdPath(new ArrayList<>(currentPath.path));
                 continue;
             }
 
@@ -63,7 +68,24 @@ public class RouteService {
             }
         }
 
+        this.populatePlanetPathFromPlanetIdPath(shortestPathAndDistance);
         return shortestPathAndDistance;
+    }
+
+    public void populatePlanetPathFromPlanetIdPath(PathAndDistanceDto pathAndDistanceDto) {
+        List<Integer> planetIdPath =  pathAndDistanceDto.getPlanetIdPath();
+        List<Planet> planetPath = new ArrayList<>();
+
+        for(Integer planetId: planetIdPath) {
+            Optional<Planet> planetQuery = planetRepository.findById(planetId);
+
+            if(planetQuery.isEmpty()) {
+               continue;
+            }
+            Planet planet = planetQuery.get();
+            planetPath.add(planet);
+        }
+        pathAndDistanceDto.setPlanetPath(planetPath);
     }
 
     static class PathTracker {
