@@ -12,6 +12,7 @@ export class App {
   protected readonly title = signal('holigram');
 
   planets: any[] = [];
+  private selectionCounter = 0;
 
     constructor(private http: HttpClient) {}
 
@@ -31,15 +32,19 @@ export class App {
   }
 
   onPlanetChecked(planet: any, checked: boolean) {
-    const selected = this.planets.filter(p => p.selected);
-
-    if (checked && selected.length === 2) {
-      selected[1].selected = false;
-    }
-
     planet.selected = checked;
 
-    this.planets.filter(p => p.selected);
+    if (checked) {
+      planet.selectedAt = ++this.selectionCounter;
+
+      const selected = this.planets
+        .filter(p => p.selected)
+        .sort((a, b) => a.selectedAt - b.selectedAt);
+
+      if (selected.length > 2) {
+        selected[1].selected = false;
+      }
+    }
   }
 
   onCalculateClicked() {
