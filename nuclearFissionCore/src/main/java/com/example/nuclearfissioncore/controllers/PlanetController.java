@@ -3,9 +3,8 @@ package com.example.nuclearfissioncore.controllers;
 import com.example.nuclearfissioncore.dto.PlanetWithRoutesDto;
 import com.example.nuclearfissioncore.models.Planet;
 import com.example.nuclearfissioncore.services.PlanetService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
@@ -25,6 +24,23 @@ public class PlanetController {
     @GetMapping("/planets")
     public List<Planet> getAllPlanets() {
         return planetService.getAllPlanets();
+    }
+
+    @PostMapping("/planets")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Planet createPlanet(@RequestBody Planet planet) {
+        return planetService.createPlanet(planet);
+    }
+
+    @PutMapping("/planets/{id}")
+    public Planet updatePlanet(@PathVariable Integer id, @RequestBody Planet planet) {
+        return planetService.updatePlanet(id, planet);
+    }
+
+    @DeleteMapping("/planets/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePlanet(@PathVariable Integer id) {
+        planetService.deletePlanet(id);
     }
 
     @GetMapping("/planetsWithRoutes")

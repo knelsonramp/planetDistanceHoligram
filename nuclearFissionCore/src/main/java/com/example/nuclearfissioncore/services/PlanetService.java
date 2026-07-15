@@ -6,7 +6,9 @@ import com.example.nuclearfissioncore.models.Planet;
 import com.example.nuclearfissioncore.models.Route;
 import com.example.nuclearfissioncore.repositoryies.PlanetRepository;
 import com.example.nuclearfissioncore.repositoryies.RouteRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +33,27 @@ public class PlanetService {
 
     public Planet getPlanet(Integer planetId) {
         return planetRepository.findById(planetId).orElse(null);
+    }
+
+    public Planet createPlanet(Planet planet) {
+        return planetRepository.save(planet);
+    }
+
+    public Planet updatePlanet(Integer planetId, Planet planetUpdates) {
+        Planet planet = planetRepository.findById(planetId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No planet found with id " + planetId));
+
+        planet.setName(planetUpdates.getName());
+        planet.setNode(planetUpdates.getNode());
+
+        return planetRepository.save(planet);
+    }
+
+    public void deletePlanet(Integer planetId) {
+        if (!planetRepository.existsById(planetId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No planet found with id " + planetId);
+        }
+        planetRepository.deleteById(planetId);
     }
 
     public List<PlanetWithRoutesDto> getPlanetsWithRoutes() {
