@@ -125,4 +125,22 @@ export class App {
 
     return display;
   });
+
+  namePathDisplay = computed(() => {
+    const path = this.shortestPath();
+
+    if (!path) {
+      return '';
+    }
+
+    let display = '';
+    for (let i = 0; i < path.planetPath.length; i++) {
+      if (i > 0) {
+        display += ' -> ';
+      }
+      display += path.planetPath[i].name;
+    }
+
+    return display;
+  });
 }
