@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
@@ -11,8 +11,9 @@ import { HttpClient } from '@angular/common/http';
 export class App {
   protected readonly title = signal('holigram');
 
-  planets: any[] = [];
-  private selectionCounter = 0;
+  planets = signal<any[]>([]);
+  shortestPath = signal<any>(null);
+  private lastSelectedId: number | null = null;
 
     constructor(private http: HttpClient) {}
 
@@ -20,10 +21,14 @@ export class App {
     this.http.get<any[]>('http://localhost:8080/planetsWithRoutes')
       .subscribe({
         next: (data) => {
-          this.planets = data.map(planet => ({
-            ...planet,
-            selected: false
-          }));
+          const planetsWithSelection = [];
+          for (let i = 0; i < data.length; i++) {
+            planetsWithSelection.push({
+              ...data[i],
+              selected: false
+            });
+          }
+          this.planets.set(planetsWithSelection);
         },
         error: (err) => {
           console.error(err);
@@ -32,22 +37,76 @@ export class App {
   }
 
   onPlanetChecked(planet: any, checked: boolean) {
-    planet.selected = checked;
+    const planets = this.planets();
 
-    if (checked) {
-      planet.selectedAt = ++this.selectionCounter;
-
-      const selected = this.planets
-        .filter(p => p.selected)
-        .sort((a, b) => a.selectedAt - b.selectedAt);
-
-      if (selected.length > 2) {
-        selected[1].selected = false;
+    planets.forEach(p => {
+      if (p.planetId === planet.planetId) {
+        p.selected = true;
       }
+    });
+
+    const selectedCount = planets.filter(p => p.selected);
+
+    console.log(selectedCount.length);
+
+    if(selectedCount.length <= 2) {
+      this.lastSelectedId = planet.planetId;
+      this.planets.set(planets);
+      return;
     }
+
+    planets.forEach(p => {
+      if(p.planetId === this.lastSelectedId) {
+        p.selected = false;
+      }
+    });
+
+    this.lastSelectedId = planet.planetId;
+    this.planets.set(planets);
   }
 
   onCalculateClicked() {
-    console.log('calculating');
+    const currentPlanets = this.planets();
+    const selected = [];
+    for (let i = 0; i < currentPlanets.length; i++) {
+      if (currentPlanets[i].selected) {
+        selected.push(currentPlanets[i]);
+      }
+    }
+
+    if (selected.length !== 2) {
+      return;
+    }
+
+    const originId = selected[0].planetId;
+    const destinationId = selected[1].planetId;
+
+    this.http.get<any>(`http://localhost:8080/shortestPathBetweenPlanets?originPlanetId=${originId}&destinationPlanetId=${destinationId}`)
+      .subscribe({
+        next: (data) => {
+          this.shortestPath.set(data);
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
   }
+
+  pathDisplay = computed(() => {
+    const path = this.shortestPath();
+
+    if (!path) {
+      return '';
+    }
+
+    let display = '';
+    for (let i = 0; i < path.planetPath.length; i++) {
+      if (i > 0) {
+        display += ' -> ';
+      }
+      display += path.planetPath[i].node;
+    }
+
+    return display;
+  });
 }

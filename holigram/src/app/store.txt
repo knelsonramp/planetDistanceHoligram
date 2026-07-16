@@ -1,0 +1,39 @@
+  onPlanetChecked(planet: any, checked: boolean) {
+    const selectedAt = checked ? ++this.selectionCounter : planet.selectedAt;
+
+    const currentPlanets = this.planets();
+    let updated = [];
+    for (let i = 0; i < currentPlanets.length; i++) {
+      const p = currentPlanets[i];
+      if (p.planetId === planet.planetId) {
+        updated.push({ ...p, selected: checked, selectedAt });
+      } else {
+        updated.push(p);
+      }
+    }
+
+    if (checked) {
+      const selected = [];
+      for (let i = 0; i < updated.length; i++) {
+        if (updated[i].selected) {
+          selected.push(updated[i]);
+        }
+      }
+      selected.sort((a, b) => a.selectedAt - b.selectedAt);
+
+      if (selected.length > 2) {
+        const toDeselect = selected[1].planetId;
+        const afterDeselect = [];
+        for (let i = 0; i < updated.length; i++) {
+          if (updated[i].planetId === toDeselect) {
+            afterDeselect.push({ ...updated[i], selected: false });
+          } else {
+            afterDeselect.push(updated[i]);
+          }
+        }
+        updated = afterDeselect;
+      }
+    }
+
+    this.planets.set(updated);
+  }

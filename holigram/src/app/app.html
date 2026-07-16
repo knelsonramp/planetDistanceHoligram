@@ -1,15 +1,19 @@
-@for (planet of planets; track planet.planetId) {
+@for (planet of planets(); track planet.planetId) {
   <div>
     <input 
       type="checkbox"
       [checked]="planet.selected"
       (change)="onPlanetChecked(planet, $any($event.target).checked)"
     >
-    {{ planet.planetName }}
+    {{ planet.planetName }} - {{ planet.planetNode }}
   </div>
 }
 
 <button (click)="onCalculateClicked()">Calculate Distance</button>
-<p>Distance: </p>
+
+@if (shortestPath()) {
+  <p>{{ pathDisplay() }}</p>
+  <p>Distance: {{ shortestPath().distance }}</p>
+}
 
 <router-outlet />
