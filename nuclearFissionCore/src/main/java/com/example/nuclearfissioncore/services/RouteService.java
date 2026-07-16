@@ -101,6 +101,20 @@ public class RouteService {
                 PathTracker pathToExplore = new PathTracker(newPath, newDistance);
                 pathsToExplore.add(pathToExplore);
             }
+
+            List<Route> arrivalRoutes = routeRepository.findByDestinationPlanetId(lastestPlanetIdInPath);
+
+            for(Route arrivalRoute: arrivalRoutes) {
+                if(currentPath.path.contains(arrivalRoute.getOriginPlanetId())) {
+                    continue;
+                }
+
+                List<Integer> newPath = new ArrayList<>(currentPath.path);
+                newPath.add(arrivalRoute.getOriginPlanetId());
+                double newDistance = currentPath.distance + arrivalRoute.getDistance();
+                PathTracker pathToExplore = new PathTracker(newPath, newDistance);
+                pathsToExplore.add(pathToExplore);
+            }
         }
 
         this.populatePlanetPathFromPlanetIdPath(shortestPathAndDistance);
