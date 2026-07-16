@@ -7,6 +7,8 @@
       <th>Name</th>
       <th>Node</th>
       <th>Routes</th>
+      <th>Distance</th>
+      <th>Delay</th>
     </tr>
   </thead>
   <tbody>
@@ -23,15 +25,19 @@
         <td>{{ planet.planetName }}</td>
         <td>{{ planet.planetNode }}</td>
         <td>
-          <table class="routes-table">
-            @for (route of planet.routes; track route.destinationPlanetId) {
-              <tr>
-                <td>({{ route.destinationPlanetNode }}) {{ route.destinationPlanetName }}</td>
-                <td>distance: {{ route.distance }}</td>
-                <td>delay: {{ route.trafficDelay }}</td>
-              </tr>
-            }
-          </table>
+          @for (route of planet.routes; track route.destinationPlanetId) {
+            <div>{{ route.destinationPlanetName }}</div>
+          }
+        </td>
+        <td>
+          @for (route of planet.routes; track route.destinationPlanetId) {
+            <div>{{ route.distance }}</div>
+          }
+        </td>
+        <td>
+          @for (route of planet.routes; track route.destinationPlanetId) {
+            <div>{{ route.trafficDelay }}</div>
+          }
         </td>
       </tr>
     }
