@@ -69,8 +69,10 @@
     <div>
       <p>{{ pathDisplay() }}</p>
       <p>{{ namePathDisplay() }}</p>
-      <p>light years: {{ shortestPath().distance }}</p>
-      <p>Parsecs: {{ shortestPath().distance / 3.26156 }}</p>
+      @if (shortestPath(); as path) {
+        <p>Light Years: {{ path.distance }}</p>
+        <p>Parsecs: {{ path.distance / 3.26156 }}</p>
+      }
     </div>
 </div>
 
