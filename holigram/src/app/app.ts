@@ -51,7 +51,7 @@ export class App {
 
     if(selectedCount.length <= 2) {
       this.lastSelectedId = planet.planetId;
-      this.planets.set(planets);
+      this.planets.set([...planets]);
       return;
     }
 
@@ -62,7 +62,7 @@ export class App {
     });
 
     this.lastSelectedId = planet.planetId;
-    this.planets.set(planets);
+    this.planets.set([...planets]);
   }
 
   onCalculateClicked() {
@@ -91,6 +91,22 @@ export class App {
         }
       });
   }
+
+  selectedNodesDisplay = computed(() => {
+    const currentPlanets = this.planets();
+
+    let display = '';
+    for (let i = 0; i < currentPlanets.length; i++) {
+      if (currentPlanets[i].selected) {
+        if (display) {
+          display += ', ';
+        }
+        display += currentPlanets[i].planetNode;
+      }
+    }
+
+    return display;
+  });
 
   pathDisplay = computed(() => {
     const path = this.shortestPath();

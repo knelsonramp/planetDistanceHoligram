@@ -39,6 +39,8 @@
 </table>
 
 <div>
+  <p style="font-size: 20px;">Selected Planets: {{ selectedNodesDisplay() }}</p>
+
   <button style="font-size: 20px;" (click)="onCalculateClicked()">Calculate Distance</button>
 
   @if (shortestPath()) {
