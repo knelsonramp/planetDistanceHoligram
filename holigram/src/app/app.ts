@@ -13,6 +13,7 @@ export class App {
 
   planets = signal<any[]>([]);
   shortestPath = signal<any>(null);
+  enableTraffic = signal(false);
   private lastSelectedId: number | null = null;
 
     constructor(private http: HttpClient) {}
@@ -34,6 +35,10 @@ export class App {
           console.error(err);
         }
       });
+  }
+
+  onEnableTrafficChanged(event: Event) {
+    this.enableTraffic.set((event.target as HTMLInputElement).checked);
   }
 
   onPlanetChecked(planet: any, checked: boolean) {
@@ -81,7 +86,7 @@ export class App {
     const originId = selected[0].planetId;
     const destinationId = selected[1].planetId;
 
-    this.http.get<any>(`http://localhost:8080/shortestPathBetweenPlanets?originPlanetId=${originId}&destinationPlanetId=${destinationId}`)
+    this.http.get<any>(`http://localhost:8080/shortestPathBetweenPlanets?originPlanetId=${originId}&destinationPlanetId=${destinationId}&includeTrafficDelay=${this.enableTraffic()}`)
       .subscribe({
         next: (data) => {
           this.shortestPath.set(data);

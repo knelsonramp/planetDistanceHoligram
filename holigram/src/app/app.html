@@ -6,8 +6,8 @@
       <th>Node</th>
       <th>Name</th>
       <th>Routes</th>
-      <th>Distance</th>
-      <th>Delay</th>
+      <th>Distance (ly)</th>
+      <th>Delay (ly)</th>
     </tr>
   </thead>
   <tbody>
@@ -45,16 +45,27 @@
 <div>
   <p>Selected Planets: {{ selectedNodesDisplay() }}</p>
 
-  <button (click)="onCalculateClicked()">Get Shortest Path</button>
+  <div>
+    <div style="margin-bottom: 10px;">
+      <label>
+        <input
+          type="checkbox"
+          [checked]="enableTraffic()"
+          (change)="onEnableTrafficChanged($event)"
+        >
+        Enable Traffic
+      </label>
+    </div>
 
-  @if (shortestPath()) {
+    <div>
+      <button (click)="onCalculateClicked()">Get Shortest Path</button>
+    </div>
     <div>
       <p>{{ pathDisplay() }}</p>
       <p>{{ namePathDisplay() }}</p>
       <p>light years: {{ shortestPath().distance }}</p>
       <p>Parsecs: {{ shortestPath().distance / 3.26156 }}</p>
     </div>
-  }
 </div>
 
 </div>
