@@ -5,7 +5,8 @@
       <th>Select</th>
       <th>Node</th>
       <th>Name</th>
-      <th>Routes</th>
+      <th>Route Nodes</th>
+      <th>Route Names</th>
       <th>Distance (ly)</th>
       <th>Delay (ly)</th>
     </tr>
@@ -22,6 +23,11 @@
         </td>
         <td>{{ planet.planetNode }}</td>
         <td>{{ planet.planetName }}</td>
+                <td>
+          @for (route of planet.routes; track route.destinationPlanetId) {
+            <div>{{ route.destinationPlanetNode }}</div>
+          }
+        </td>
         <td>
           @for (route of planet.routes; track route.destinationPlanetId) {
             <div>{{ route.destinationPlanetName }}</div>
