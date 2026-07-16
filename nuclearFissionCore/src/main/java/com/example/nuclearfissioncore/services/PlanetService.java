@@ -75,6 +75,10 @@ public class PlanetService {
                     Planet destinationPlanet = planetsById.get(route.getDestinationPlanetId());
                     RouteDto routeDto = new RouteDto(route.getDestinationPlanetId(), destinationPlanet.getName(), route.getDistance(), destinationPlanet.getNode(), route.getTrafficDelay());
                     routeDtos.add(routeDto);
+                } else if(Objects.equals(planet.getId(), route.getDestinationPlanetId())) {
+                    Planet originPlanet = planetsById.get(route.getOriginPlanetId());
+                    RouteDto routeDto = new RouteDto(route.getOriginPlanetId(), originPlanet.getName(), route.getDistance(), originPlanet.getNode(), route.getTrafficDelay());
+                    routeDtos.add(routeDto);
                 }
             }
             planetWithRoutes.setRoutes(routeDtos);
