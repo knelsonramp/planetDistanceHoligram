@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.swing.text.StyledEditorKit;
 import java.util.*;
 
 @Service
@@ -55,7 +56,7 @@ public class RouteService {
         routeRepository.deleteById(id);
     }
 
-    public PathAndDistanceDto findShortestPath(Integer originPlanetId, Integer destinationPlanetId) {
+    public PathAndDistanceDto findShortestPath(Integer originPlanetId, Integer destinationPlanetId, Boolean includeTrafficDelay) {
 
         PathAndDistanceDto shortestPathAndDistance = new PathAndDistanceDto(new ArrayList<>(List.of(originPlanetId)), Double.POSITIVE_INFINITY);
 
@@ -98,6 +99,11 @@ public class RouteService {
                 List<Integer> newPath = new ArrayList<>(currentPath.path);
                 newPath.add(departureRoute.getDestinationPlanetId());
                 double newDistance = currentPath.distance + departureRoute.getDistance();
+
+                if(includeTrafficDelay) {
+                    newDistance += departureRoute.getTrafficDelay();
+                }
+
                 PathTracker pathToExplore = new PathTracker(newPath, newDistance);
                 pathsToExplore.add(pathToExplore);
             }
@@ -112,6 +118,11 @@ public class RouteService {
                 List<Integer> newPath = new ArrayList<>(currentPath.path);
                 newPath.add(arrivalRoute.getOriginPlanetId());
                 double newDistance = currentPath.distance + arrivalRoute.getDistance();
+
+                if(includeTrafficDelay) {
+                    newDistance += arrivalRoute.getTrafficDelay();
+                }
+
                 PathTracker pathToExplore = new PathTracker(newPath, newDistance);
                 pathsToExplore.add(pathToExplore);
             }
