@@ -43,15 +43,16 @@
 </table>
 
 <div>
-  <p style="font-size: 20px;">Selected Planets: {{ selectedNodesDisplay() }}</p>
+  <p>Selected Planets: {{ selectedNodesDisplay() }}</p>
 
-  <button style="font-size: 20px;" (click)="onCalculateClicked()">Calculate Distance</button>
+  <button (click)="onCalculateClicked()">Get Shortest Path</button>
 
   @if (shortestPath()) {
-    <div style="font-size: 20px;">
+    <div>
       <p>{{ pathDisplay() }}</p>
       <p>{{ namePathDisplay() }}</p>
-      <p>Distance: {{ shortestPath().distance }}</p>
+      <p>light years: {{ shortestPath().distance }}</p>
+      <p>Parsecs: {{ shortestPath().distance / 3.26156 }}</p>
     </div>
   }
 </div>
